@@ -1,1 +1,0 @@
-# kkmed-backend

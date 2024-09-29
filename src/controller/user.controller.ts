@@ -1,9 +1,9 @@
-import { UserModel } from "../models";
+import { UserModel } from "../models/index.js";
 import express from "express";
 
 // Update User Details
-export const updateUserDetails = async (req:any, res:express.Response) => {
-  const userId = req.user.id; 
+export const updateUserDetails = async (req: any, res: express.Response) => {
+  const userId = req.user.id;
   const updates = req.body;
 
   try {
@@ -29,7 +29,7 @@ export const updateUserDetails = async (req:any, res:express.Response) => {
   }
 };
 
-export const getUserProfile = async (req:any, res:express.Response) => {  
+export const getUserProfile = async (req: any, res: express.Response) => {
   const userId = req.user.id;
 
   try {

@@ -1,4 +1,4 @@
-import { UserModel } from "../models";
+import { UserModel } from "../models/index.js";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
@@ -35,9 +35,9 @@ export const sendOTP = async (req: Request, res: Response): Promise<Response> =>
     // const smsResponse = await sendSMS(mobileNumber, `Your OTP is ${otp}`);
 
     // if (smsResponse && smsResponse.success) {
-      return res.status(200).json({ message: "OTP sent successfully" });
+    return res.status(200).json({ message: "OTP sent successfully" });
     // } else {
-      // return res.status(500).json({ message: "Failed to send OTP" });
+    // return res.status(500).json({ message: "Failed to send OTP" });
     // }
   } catch (error) {
     return res.status(500).json({ message: "Server error", error: error });

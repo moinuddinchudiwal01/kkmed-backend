@@ -1,9 +1,9 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import { dbConnection } from "./database/database";
-import indexRouter from "./routes/inex";
-import authRouter from "./routes/authRoutes";
+import { dbConnection } from "./database/dbConfig.js";
+import indexRouter from "./routes/inex.js";
+import authRouter from "./routes/authRoutes.js";
 
 // .env file configration
 dotenv.config({ path: "./.env" });

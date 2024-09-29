@@ -1,7 +1,11 @@
-const jwt = require('jsonwebtoken');
-import express from "express";
+import jwt from 'jsonwebtoken';
+import express from 'express';
+import dotenv from 'dotenv';
+import { User } from '../types/userTypes.js';
 
-module.exports = (req:express.Request, res:express.Response, next:express.NextFunction) => {
+dotenv.config();
+
+export const auth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const authHeader = req.header('Authorization');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -11,8 +15,8 @@ module.exports = (req:express.Request, res:express.Response, next:express.NextFu
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { id: user._id, role: user.role }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || '') as User;
+    req.user = decoded;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Token is not valid' });

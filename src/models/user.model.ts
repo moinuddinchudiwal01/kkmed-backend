@@ -40,7 +40,7 @@ const userSchema = new Schema({
     default: 'User',
   },
   address: {
-    type: String
+    type: String,
   },
   isActive: {
     type: Boolean,

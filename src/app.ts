@@ -13,21 +13,21 @@ export const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin:process.env.CLIENT_URL,
-  methods:"GET,POST,PUT,PATCh,DELETE",
-  credentials:true,
+  origin: process.env.CLIENT_URL,
+  methods: "GET,POST,PUT,PATCh,DELETE",
+  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
-app.use(express.urlencoded({extended:true}))  
+app.use(express.urlencoded({ extended: true }))
 
 // import routes
-app.use("/api/v1",indexRouter)
-app.use("/auth",authRouter)
+app.use("/api/v1", indexRouter)
+app.use("/auth", authRouter)
 
-// database connection
+// import database
 dbConnection();
 
 // server configration
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
 })

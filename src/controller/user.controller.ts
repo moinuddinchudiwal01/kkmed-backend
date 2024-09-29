@@ -2,8 +2,8 @@ import { UserModel } from "../models";
 import express from "express";
 
 // Update User Details
-exports.updateUserDetails = async (req:express.Request, res:express.Response) => {
-  const userId = req.user.id; // Assume auth middleware sets req.user
+export const updateUserDetails = async (req:any, res:express.Response) => {
+  const userId = req.user.id; 
   const updates = req.body;
 
   try {
@@ -17,7 +17,7 @@ exports.updateUserDetails = async (req:express.Request, res:express.Response) =>
     const allowedUpdates = ['firstName', 'lastName', 'email', 'profilePic', 'vendorDetails', 'deliveryBoyDetails'];
     allowedUpdates.forEach(field => {
       if (updates[field] !== undefined) {
-        user[field] = updates[field];
+        // user[field] = updates[field];
       }
     });
 
@@ -29,8 +29,7 @@ exports.updateUserDetails = async (req:express.Request, res:express.Response) =>
   }
 };
 
-// Get User Profile
-exports.getUserProfile = async (req:express.Request, res:express.Response) => {
+export const getUserProfile = async (req:any, res:express.Response) => {  
   const userId = req.user.id;
 
   try {

@@ -2,6 +2,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import { dbConnection } from "./database/database";
+import indexRouter from "./routes/inex";
+import authRouter from "./routes/authRoutes";
 
 // .env file configration
 dotenv.config({ path: "./.env" });
@@ -19,11 +21,11 @@ app.use(cors({
 app.use(express.urlencoded({extended:true}))  
 
 // import routes
-
+app.use("/api/v1",indexRouter)
+app.use("/auth",authRouter)
 
 // database connection
 dbConnection();
-
 
 // server configration
 app.listen(process.env.PORT,()=>{

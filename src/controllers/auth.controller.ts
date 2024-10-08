@@ -37,9 +37,11 @@ export const sendOTP = catchAsyncError(
 export const verifyOTP = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction): Promise<object> => {
         const body: { phone: string, otp: string } = req.body;
-        const user = await User.findOne({ phone: body.phone });
 
         if (!body.phone || !body.otp) throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.PHONE_OTP_REQUIRED);
+
+        const user = await User.findOne({ phone: body.phone });
+
         if (!user) throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.USER_NOT_FOUND);
         if (user.isVerified) throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.USER_ALREADY_VERIFY);
         if (user.otp !== body.otp) throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.INVALID_OTP);

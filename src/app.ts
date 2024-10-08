@@ -18,6 +18,8 @@ app.use(cors({
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Middlewares
 app.use(compression());
 app.use(helmet());
 app.use(express.urlencoded({ extended: true }));

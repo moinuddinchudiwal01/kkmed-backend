@@ -8,12 +8,12 @@ import authRouter from "./routes/authRoutes.js";
 // .env file configration
 dotenv.config({ path: "./.env" });
 
-// initialize app 
+// initialize app
 export const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
   methods: "GET,POST,PUT,PATCh,DELETE",
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']

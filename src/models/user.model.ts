@@ -1,77 +1,41 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Schema } from 'mongoose';
+import { Role } from '../enums/role.enum';
 
-const userSchema = new Schema({
-  mobileNumber: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
-  },
-  otp: {
-    type: String
-  },
-  otpExpiresAt: {
-    type: Number
-  },
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
-  firstName: {
-    type: String,
-    default: 'John'
-  },
-  lastName: {
-    type: String,
-    default: 'Doe'
-  },
-  email: {
-    type: String,
-    default: 'john.doe@example.com',
-    lowercase: true
-  },
-  profilePic: {
-    type: String,
-    default: 'https://example.com/default-profile-pic.png'
-  },
-  role: {
-    type: String,
-    enum: ['Admin', 'Vendor', 'DeliveryBoy', 'User'],
-    default: 'User',
-  },
-  address: {
-    type: String,
-  },
-  isActive: {
-    type: Boolean,
-    default: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  vendorDetails: {
-    businessName: String,
-    businessAddress: String,
-    gstNumber: String
-  },
-  deliveryBoyDetails: {
-    vehicleNumber: String,
-    drivingLicense: String
-  },
-  cart: [
-    {
-      productId: { type: Schema.Types.ObjectId, ref: 'Product' },
-      quantity: { type: Number, default: 1 }
-    }
-  ],
-  orders: [
-    {
-      orderId: { type: Schema.Types.ObjectId, ref: 'Order' },
-      orderDate: { type: Date, default: Date.now }
-    }
-  ]
-});
+export interface IUser extends Document {
+    phone: string,
+    otp: string,
+    otpExpiredAt: number,
+    isVerified: boolean,
+    firstName: string,
+    lastName: string,
+    email: string,
+    profileImage: string
+    role: string,
+    address: string,
+    isActive: boolean,
+    lastLogin: Date,
+}
 
-export const UserModel = mongoose.model('User', userSchema);
+// Define schema
+const userSchema = new Schema<IUser>({
+    phone: { type: String, required: true, unique: true, trim: true },
+    otp: { type: String },
+    otpExpiredAt: { type: Number },
+    isVerified: { type: Boolean, default: false },
+    firstName: {
+        type: String, required: true, default: 'John'
+    },
+    lastName: {
+        type: String, required: true, default: 'Doe'
+    },
+    email: {
+        type: String, required: true, default: 'john.doe@example.com', lowercase: true
+    },
+    profileImage: { type: String, default: "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png" },
+    role: { type: String, required: true, default: Role.USER },
+    isActive: { type: Boolean, required: true, default: true },
+    lastLogin: { type: Date, required: false, default: new Date() }
+}, { timestamps: true });
 
+// Create model
+export const User = mongoose.model<IUser>('users', userSchema);

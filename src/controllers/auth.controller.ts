@@ -12,6 +12,7 @@ import { generateOTP } from "../helper/generateOTP";
 export const sendOTP = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction): Promise<object> => {
         const body: { phone: string } = req.body;
+
         const user = await User.findOne({ phone: body.phone });
 
         if (!body.phone) throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.PHONE_REQUIRED);

@@ -23,8 +23,9 @@ export const getUserById = catchAsyncError(
     }
 );
 
+// create user
 export const createUser = catchAsyncError(
-    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    async (req: Request, res: Response, next: NextFunction): Promise<object> => {
         const { phone, firstName, lastName, email, profileImage, role, isActive } = req.body;
 
         // Check if the user already exists
@@ -98,16 +99,53 @@ export const deleteUserById = catchAsyncError(
 // Get All Users
 export const getAllUsers = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
-        const users = await User.find();
+
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const skip = (page - 1) * limit;
+
+        const sortField = req.query.sortField as string || 'createdAt';
+        const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
+
+        const filters: any = {};
+        if (req.query.isActive) {
+            filters.isActive = req.query.isActive === 'true';
+        }
+        if (req.query.role) {
+            filters.role = req.query.role;
+        }
+
+        if (req.query.search) {
+            const search = req.query.search.toString();
+            filters.$or = [
+                { firstName: { $regex: search, $options: 'i' } },
+                { lastName: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const users = await User.find(filters)
+            .sort({ [sortField]: sortOrder })
+            .skip(skip)
+            .limit(limit);
 
         if (!users.length) {
             throw new ApiError(HttpStatusCode.NOT_FOUND, 'No users found');
         }
 
+        const totalUsers = await User.countDocuments(filters);
+        const totalPages = Math.ceil(totalUsers / limit);
+
         return res.status(HttpStatusCode.OK).json({
             status: true,
             message: 'Users fetched successfully',
             data: users,
+            pagination: {
+                totalUsers,
+                currentPage: page,
+                totalPages,
+                limit
+            }
         });
     }
 );

@@ -16,5 +16,6 @@ export const MESSAGE = {
         OTP_EXPIRED: "OTP has expired",
         LOGIN_SUCCESS: "Login successful.",
         DEACTIVATED: "Your account has been deactivated.",
+        USER_CREATED: "User created successfuly"
     }
 };

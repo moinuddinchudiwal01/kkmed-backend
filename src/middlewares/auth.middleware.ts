@@ -28,6 +28,6 @@ export const isAdmin = catchAsyncError(async (req: AuthenticatedRequest, res: Re
     if (req.user && req.user.role === Role.ADMIN) {
         return next();
     } else {
-        return next(new ApiError(HttpStatusCode.UNAUTHORIZED, MESSAGE.COMMON.FORBIDDEN));
+        return next(new ApiError(HttpStatusCode.FORBIDDEN, MESSAGE.COMMON.FORBIDDEN));
     }
 })

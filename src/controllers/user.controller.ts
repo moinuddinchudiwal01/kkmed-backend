@@ -28,14 +28,10 @@ export const createUser = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction): Promise<object> => {
         const { phone, firstName, lastName, email, profileImage, role, isActive } = req.body;
 
-        // Check if the user already exists
         const existingUser = await User.findOne({ phone });
 
-        if (existingUser) {
-            throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.PHONE_EXIST);
-        }
+        if (existingUser) throw new ApiError(HttpStatusCode.BAD_REQUEST, MESSAGE.AUTH.PHONE_EXIST);
 
-        // Create a new user
         const newUser = new User({
             phone,
             firstName,
@@ -46,7 +42,6 @@ export const createUser = catchAsyncError(
             isActive,
         });
 
-        // Save the user to the database
         await newUser.save();
 
         return res.status(HttpStatusCode.CREATED).json({
@@ -66,9 +61,7 @@ export const updateUserById = catchAsyncError(
 
         const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
 
-        if (!updatedUser) {
-            throw new ApiError(HttpStatusCode.NOT_FOUND, 'User not found');
-        }
+        if (!updatedUser) throw new ApiError(HttpStatusCode.NOT_FOUND, 'User not found');
 
         return res.status(HttpStatusCode.OK).json({
             status: true,
@@ -85,9 +78,7 @@ export const deleteUserById = catchAsyncError(
 
         const deletedUser = await User.findByIdAndDelete(userId);
 
-        if (!deletedUser) {
-            throw new ApiError(HttpStatusCode.NOT_FOUND, 'User not found');
-        }
+        if (!deletedUser) throw new ApiError(HttpStatusCode.NOT_FOUND, 'User not found');
 
         return res.status(HttpStatusCode.OK).json({
             status: true,

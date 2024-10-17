@@ -6,6 +6,7 @@ import { ApiError } from "./utils/ApiError";
 import mongoDBConfig from "./config/mongo.config";
 import routes from './routes';
 import morgan from 'morgan';
+import { HttpStatusCode } from "./constants/statusCode";
 
 // initialize app
 const app: Application = express();
@@ -29,7 +30,7 @@ app.use('/v1/api', routes);
 
 // Error handling middleware
 app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
-    const statusCode = err.statusCode || 500;
+    const statusCode = err.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
     res.status(statusCode).send({
         status: false,
         statusCode: statusCode,

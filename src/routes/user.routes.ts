@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { getAllUsers, getUserById, updateUserById, deleteUserById, createUser } from '../controllers/user.controller';
 const userRouter = Router();
 import { validateCreateUserDto, validateDeleteUserDto, validateGetUserByIdDto, validateUpdateUserDto } from "../utils/validation/validation";
+import { isAdmin } from '../middlewares/auth.middleware';
 
 // Route to get all users
 userRouter.get('/', getAllUsers);
